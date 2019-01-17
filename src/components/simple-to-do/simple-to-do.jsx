@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import './simple-to-do.css';
 
 const shopItemsSelector = stateSelector => stateSelector;
+let count = 0;
 
 const subtotalSelector = createSelector(
   shopItemsSelector,
@@ -59,10 +60,31 @@ export default class SimpeToDo extends Component {
         {this.renderItems(items)}
         <div className="SimpeToDo-Adding">
           <input type="text" onChange={this.handleChange} />
+          <p>Add item in shop: (only number!!)</p>
+          <input type="number" onChange={ev => {
+
+            let newState = this.state;
+            newState.shop.items = items.concat([{
+                name: `newItem${count++}`,
+                value: ev.target.value
+              }])
+
+            this.setState({
+              ...newState
+            })
+          }} />
         </div>
         <hr />
         <p>subtotalSelector:</p>
         {subtotalSelector(items)}
+        <hr />
+        <hr />
+        <p>App state:</p>
+        <div>
+          {
+            JSON.stringify(this.state)
+          }
+        </div>
       </div>
     )
   }
